@@ -13,7 +13,7 @@ void selectionSort(vector<int> &arr, int n);
 
 void mergeSort(vector<int> &arr);
 
-void merge(vector<int> &left, vector<int> &right);
+void merge(vector<int> &out, vector<int> &left, vector<int> &right, int n, int m);
 
 int main() {
     
@@ -33,9 +33,12 @@ int main() {
         bubbleSort(list, list.size());
         print(list, list.size());
         break;
-    
     case 1:
         mergeSort(list);
+        print(list, list.size());
+        break;
+    default:
+        cout << "invalid task selected" << endl;
         break;
     }
 
@@ -54,7 +57,7 @@ void print(vector<int> arr, int n) {
     cout << endl;
 }
 
-//sort in descending order
+
 void bubbleSort(vector<int> &arr, int n) {
     //run n - 1 rounds
     for (int i = 0; i < n - 1; i++)
@@ -62,12 +65,13 @@ void bubbleSort(vector<int> &arr, int n) {
         bool swapped = false;
         for (int j = 0; j < n - i - 1; j++)
         {
+            //swap the current value with the next if the current is less than next
             if(arr[j] < arr[j+1]) {
                 swap(arr[j], arr[j+1]);
                 swapped = true;
             }
         }
-        //if no changes were made to the vector
+        //if no changes were made to the vector during this round, return
         if (swapped == false)
             return;
     }
@@ -102,12 +106,34 @@ void mergeSort(vector<int> &arr) {
     selectionSort(left, left.size());
     selectionSort(right, right.size());
 
-    print(left, left.size());
-    print(right, right.size());
-
-    merge(left, right);
+    merge(arr, left, right, left.size(), right.size());
 }
 
-void merge(vector<int> &left, vector<int> &right) {
-    
+void merge(vector<int> &out, vector<int> &left, vector<int> &right, int n, int m) {
+    int i = 0, j = 0, k = 0;
+
+    //add value from the largest value between right and left
+    while (i < n && j < m) {
+        if (left[i] > right[j]) {
+            out[k] = left[i];
+            i++;
+        } else {
+            out[k] = right[j];
+            j++;
+        }
+        k++;
+    }
+
+    //add the rest of the values from either array
+    while (i < n) {
+        out[k] = left[i];
+        i++;
+        k++;
+    }
+
+    while (j < m) {
+        out[k] = right[j];
+        j++;
+        k++;
+    }
 }
