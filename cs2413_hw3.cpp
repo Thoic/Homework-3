@@ -83,14 +83,19 @@ void selectionSort(vector<int> &arr, int n) {
     for (int i = 0; i < n - 1; i++) {
         
         //find index of largest element
-        int idxLargest = i;
+        int max = i;
         for (int j = i + 1; j < n; j++) {
-            if (arr[j] > arr[idxLargest])
-                idxLargest = j;
+            if (arr[j] > arr[max])
+                max = j;
         }
 
-        //swap value of largest with bottom element
-        swap(arr[idxLargest], arr[i]);
+        //move max element at current i
+        int key = arr[max];
+        while (max > i) {
+            arr[max] = arr[max - 1];
+            max--;
+        }
+        arr[i] = key;
     }
 }
 
